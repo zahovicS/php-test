@@ -25,13 +25,4 @@ class Application
             include $file;
         }
     }
-    // protected function bindPathsInContainer(){
-
-    // }
-
-    // public function path($path = ''){
-    //     $appPath = $this->appPath ?: $this->basePath.DIRECTORY_SEPARATOR.'app';
-    //     return $appPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
-    // }
-
 }

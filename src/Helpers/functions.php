@@ -13,7 +13,7 @@ if (!function_exists('dd')) {
             foreach ($vars as $var) {
                 dump($var);
             }
-        }else{
+        } else {
             dump($vars);
         }
         die;
@@ -21,62 +21,64 @@ if (!function_exists('dd')) {
 }
 
 if (!function_exists('dump')) {
-    echo "<style>";
-    echo "pre {
-            white-space: pre-wrap;       /* css-3 */
-            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-            white-space: -pre-wrap;      /* Opera 4-6 */
-            white-space: -o-pre-wrap;    /* Opera 7 */
-            word-wrap: break-word;       /* Internet Explorer 5.5+ */
-            margin:0px;
-            padding:10px;
-            background-color:#111111;
-            color:white;
-            font-size:15px;
-            word-wrap: break-word!important;
-        }
-        /* Reset de estilos básicos del navegador */
-        body, html {
-            background-color: black;
-            margin: 5px;
+    function dump($var)
+    {
+        $folder = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))[1] ?? "System";
+        echo "<style>";
+        echo "body, html {
+            background-color: #2E2E2E;
             padding: 0;
             font-family: monospace;
         }
-
-        /* Estilo para la consola */
         .console {
             margin: 0 auto;
-            padding: 20px;
             background-color: #000;
-            color: #00ff00;
-            border: 2px solid #00ff00;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            border: 5px solid #202020;
+            border-radius: 10px;
         }
-
-        /* Estilo para la salida (texto) de la consola */
+        .header-console{
+            padding: 7px 10px;
+            background-color:#202020;
+        }
+        .title-console{
+            font-size: 16px;
+            color:white;
+        }
         #output {
             height: 200px;
-            overflow-y: scroll;
             background-color: #000;
-            border: 1px solid #00ff00;
             padding: 10px;
+            color: #fff;
+            margin: 0;
+            font-size: 17px;
         }
-
-        /* Estilo para la entrada (input) de la consola */
-        #input {
-            width: 100%;
-            padding: 5px;
-            background-color: #000;
-            color: #00ff00;
-            border: none;
-            outline: none;
+        .header-output{
+            color: white;
+            font-size: 17px;
+            padding-bottom:5px;
         }";
-    echo "</style>";
-    function dump($var)
-    {
-        echo "<pre class='console'>";
+        echo "</style>";
+        echo '<div class="console">
+        <div class="header-console">
+            <span class="title-console">
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                width="15px" height="15px" viewBox="0 0 90.000000 90.000000"
+                preserveAspectRatio="xMidYMid meet">
+               <g transform="translate(0.000000,100.000000) scale(0.100000,-0.100000)"
+               fill="#fff" stroke="none">
+               <path d="M151 851 c-29 -29 -33 -79 -29 -388 l3 -283 28 -27 27 -28 320 0 320
+               0 27 28 28 27 0 319 0 319 -24 26 -24 26 -329 0 c-311 0 -329 -1 -347 -19z
+               m639 -411 l0 -230 -290 0 -290 0 0 230 0 230 290 0 290 0 0 -230z"/>
+               <path d="M310 525 c-11 -14 -7 -23 30 -60 l43 -44 -42 -46 c-44 -47 -47 -61
+               -18 -79 14 -9 28 0 77 49 33 33 60 64 60 69 0 14 -112 126 -126 126 -6 0 -17
+               -7 -24 -15z"/>
+               <path d="M504 335 c-13 -33 15 -45 101 -45 86 0 114 12 101 45 -8 22 -194 22
+               -202 0z"/>
+               </g>
+               </svg> Bienvenido a la consola de debug.</span>
+        </div>
+        <pre id="output"><span class="header-output">C:\Users\\' . $folder . '></span><br><hr>';
         var_dump($var);
-        echo "</pre>";
+        echo "</pre></div>";
     }
 }
