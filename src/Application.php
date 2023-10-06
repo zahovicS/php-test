@@ -12,7 +12,9 @@ class Application
         if ($basePath) $this->setBasePath($basePath);
 
     }
-
+    public function handle(array $request){
+        
+    }
     public function setBasePath($basePath){
         $this->basePath = rtrim($basePath,'\/');
         $this->setHelpers();

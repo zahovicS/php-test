@@ -45,12 +45,19 @@ if (!function_exists('dump')) {
             color:white;
         }
         #output {
-            height: 200px;
+            // height: 200px;
             background-color: #000;
             padding: 10px;
             color: #fff;
             margin: 0;
-            font-size: 17px;
+            font-size: 15px;
+        }
+        pre{
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
         }
         .header-output{
             color: white;
