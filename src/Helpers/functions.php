@@ -1,31 +1,29 @@
 <?php
-if (!function_exists('string_starts_with')) {
-    function string_starts_with(string $haystack, string $needle): bool
-    {
-        return 0 === strncmp($haystack, $needle, \strlen($needle));
-    }
+function view(string $path,$attributes = []){
+
+}
+function string_starts_with(string $haystack, string $needle): bool
+{
+    return 0 === strncmp($haystack, $needle, \strlen($needle));
 }
 
-if (!function_exists('dd')) {
-    function dd(...$vars)
-    {
-        if (is_array($vars)) {
-            foreach ($vars as $var) {
-                dump($var);
-            }
-        } else {
-            dump($vars);
+function dd(...$vars)
+{
+    if (is_array($vars)) {
+        foreach ($vars as $var) {
+            dump($var);
         }
-        die;
+    } else {
+        dump($vars);
     }
+    die;
 }
 
-if (!function_exists('dump')) {
-    function dump($var)
-    {
-        $folder = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))[1] ?? "System";
-        echo "<style>";
-        echo "body, html {
+function dump($var)
+{
+    $folder = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))[1] ?? "System";
+    echo "<style>";
+    echo "body, html {
             background-color: #2E2E2E;
             padding: 0;
             font-family: monospace;
@@ -64,8 +62,8 @@ if (!function_exists('dump')) {
             font-size: 17px;
             padding-bottom:5px;
         }";
-        echo "</style>";
-        echo '<div class="console">
+    echo "</style>";
+    echo '<div class="console">
         <div class="header-console">
             <span class="title-console">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +83,6 @@ if (!function_exists('dump')) {
                </svg> Bienvenido a la consola de debug.</span>
         </div>
         <pre id="output"><span class="header-output">C:\Users\\' . $folder . '></span><br><hr>';
-        var_dump($var);
-        echo "</pre></div>";
-    }
+    var_dump($var);
+    echo "</pre></div>";
 }
