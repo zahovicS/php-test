@@ -10,4 +10,4 @@ $app = include_once APP_ROOT . "/bootstrap/app.php";
 
 $request = Request::capture();
 
-dd(DB::query("SELECT * FROM categorias")->findOrFail()->toArray());
+dd(DB::query("SELECT * FROM categorias")->first());

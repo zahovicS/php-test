@@ -7,7 +7,7 @@ use PDOException;
 
 class Database{
 
-    public $connection;
+    private $connection;
     // public $statement;
 
     function __construct(array $config) {
@@ -18,33 +18,7 @@ class Database{
             throw new PDOException("Error Database: ".$e->getMessage());
         }
     }
-    // public function query($query, $params = [])
-    // {
-    //     $this->statement = $this->connection->prepare($query);
-
-    //     $this->statement->execute($params);
-
-    //     return $this;
-    // }
-
-    // public function get()
-    // {
-    //     return $this->statement->fetchAll();
-    // }
-
-    // public function first()
-    // {
-    //     return $this->statement->fetch();
-    // }
-
-    // public function findOrFail()
-    // {
-    //     $result = $this->first();
-
-    //     if (! $result) {
-    //         die();
-    //     }
-
-    //     return $result;
-    // }
+    public function getConnection() {
+        return $this->connection;
+    }
 }

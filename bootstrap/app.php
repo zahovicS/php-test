@@ -15,10 +15,6 @@ $container->bind('Src\Database\Database', function () {
     return new Database($config['database']);
 });
 
-// $container->bind('Src\Http\Request', function () {
-//     return Request::capture();
-// });
-
 $app::setContainer($container);
 
 return $app;

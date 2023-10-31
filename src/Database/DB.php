@@ -2,54 +2,45 @@
 
 namespace Src\Database;
 
-use Src\App\Application;
 use Src\Database\Database;
+use stdClass;
+use PDO;
 
 class DB{
-    public static $database;
-    private static $statement;
-    private static $result;
-    // protected static $table = "";
-    // protected static $connection = "";
-    // protected $database = null;
 
-    // function __construct() {
-    //     if(!$this->database) $this->database = Application::resolve(Database::class);
-    // }
+    public static $instance = null;
+    private static $statement = null;
+    private static $result = null;
 
-    // public static function table(string $table){
-    //     self::$table = $table;
-    //     return new self();
-    // }
-    // public static function connection(string $connection){
-    //     self::$connection = $connection;
-    //     return new self();
-    // }
-    // public static function all(){
-    //     return [self::$table,self::$connection];
-    // }
-
-    public static function query($query, $params = [])
+    public static function connection(string $connection): DB
     {
-        self::$database = Application::resolve(Database::class);
-        self::$statement = self::$database->connection->prepare($query);
+        $config = config("database");
+        self::$instance = (new Database($config[$connection]))->getConnection();
+        return new self;
+    }
+
+    public static function query(string $query,array $params = []): DB
+    {
+        $config = config("database");
+        self::$instance = self::$instance ?? (new Database($config['default']))->getConnection();
+        self::$statement = self::$instance->prepare($query);
         self::$statement->execute($params);
         return new self;
     }
 
-    public static function get()
+    public static function get(): array
     {
         self::$result = self::$statement->fetchAll();
         return self::$result;
     }
 
-    public  static function first()
+    public  static function first(): stdClass
     {
         self::$result = self::$statement->fetch();
         return self::$result;
     }
 
-    public  static function findOrFail()
+    public  static function findOrFail(): stdClass
     {
         $result = self::first();
 
@@ -59,8 +50,9 @@ class DB{
 
         return $result;
     }
-    public  static function toArray()
+    public static function toArray(): array
     {
-        return (array) self::$result;
+        $result = self::$statement->fetchAll(PDO::FETCH_ASSOC);
+        return count($result) == 1 ? $result[0] : $result;
     }
 }
