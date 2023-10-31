@@ -2,9 +2,9 @@
 
 return [
     'name' => "New Application",
-    'url' => "http://localhost",
-    'asset_url' => null,
+    'url' => "http://localhost/php-test/public/",
+    'asset_folder' => "assets/",
     'down' => false,
     'debug' => true,
-    'timezone' => 'America/Lima'
+    'timezone' => 'America/Lima',
 ];

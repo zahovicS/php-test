@@ -6,29 +6,13 @@ class Application
 {
 
     protected string $basePath;
+    protected array $configGlobal;
     protected string $appPath;
     protected static $container;
 
-    public function __construct($basePath = null) {
+    public function __construct($basePath = null)
+    {
         if ($basePath) $this->setBasePath($basePath);
-
-    }
-
-    public function handle(array $request){
-        
-    }
-
-    public function setBasePath($basePath){
-        $this->basePath = rtrim($basePath,'\/');
-        $this->setHelpers();
-        return $this;
-    }
-
-    protected function setHelpers(){
-        $helpers = $this->basePath . "/src/Helpers/*.php";
-        foreach (glob($helpers) as $file) {
-            include $file;
-        }
     }
 
     public static function setContainer($container)
@@ -51,4 +35,50 @@ class Application
         return static::container()->resolve($key);
     }
 
+    public function handle(array $request)
+    {
+    }
+
+    public function setBasePath($basePath)
+    {
+        $this->basePath = rtrim($basePath, '\/');
+        return $this;
+    }
+
+
+    private function setHelpers()
+    {
+        $helpers = $this->basePath . "/src/Helpers/*.php";
+        foreach (glob($helpers) as $file) {
+            include $file;
+        }
+    }
+
+    private function setTimeZone(string $timezone)
+    {
+        date_default_timezone_set($timezone);
+    }
+
+    private function setConfig()
+    {
+        $this->configGlobal = config("app");
+    }
+
+    public function init()
+    {
+        //set timezone etc
+        $this->setHelpers();
+        $this->setConfig();
+        $this->setTimeZone($this->configGlobal["timezone"]);
+        $this->setErrors();
+    }
+
+    private function setErrors()
+    {
+        if ($this->configGlobal["debug"]) {
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
+        }
+    }
 }

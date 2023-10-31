@@ -1,7 +1,6 @@
 <?php
 
 define("APP_ROOT",__DIR__);
-define("APP_URL", "http://localhost/php-test");
 
 $uri = urldecode(
     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)

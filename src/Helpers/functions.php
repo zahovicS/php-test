@@ -1,6 +1,22 @@
 <?php
-function view(string $path,$attributes = []){
 
+use Src\View\View;
+
+function view(string $template,array $data = []){
+    return View::view($template,$data);
+}
+
+function asset(string $path = ""){
+    $config = config("app");
+    $url = $config["url"];
+    $asset_folder = $config["asset_folder"] ?? "asset/";
+    return "{$url}{$asset_folder}{$path}";
+}
+
+function route(string $route = ""){
+    $config = config("app");
+    $url = $config["url"];
+    return "{$url}{$route}";
 }
 function string_starts_with(string $haystack, string $needle): bool
 {

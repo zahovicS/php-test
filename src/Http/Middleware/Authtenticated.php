@@ -2,11 +2,13 @@
 
 namespace Src\Http\Middleware;
 
+use Src\Auth\Auth;
+
 class Authenticated
 {
     public function handle()
     {
-        if (! $_SESSION['user'] ?? false) {
+        if (!Auth::check() ?? false) {
             header('location: /');
             exit();
         }

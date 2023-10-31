@@ -4,8 +4,12 @@ function storage_path(){
     
 }
 
-function app_path(){
-    
+function app_path(string $path = ""){
+    return root_path("/app/{$path}");
+}
+
+function view_path(string $path = ""){
+    return app_path("Views/{$path}");
 }
 
 function root_path(string $folder = ""){

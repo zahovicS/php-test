@@ -31,15 +31,15 @@ class Auth
 
         session_regenerate_id(true);
     }
-    
-    public function user():?array
+
+    public static function user():?array
     {
-        return isset($_SESSION['user']) && !empty($_SESSION['user']) ?? null;
+        return Auth::check() ? $_SESSION['user'] : null;
     }
 
-    public function check(): bool
+    public static function check(): bool
     {
-        return isset($_SESSION['user']);
+        return isset($_SESSION['user']) && !empty($_SESSION['user']);
     }
 
     public function logout()

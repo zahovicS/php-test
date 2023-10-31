@@ -2,7 +2,6 @@
 
 use Src\App\Container;
 use Src\Database\Database;
-use Src\Http\Request;
 
 $app = new \Src\App\Application(
     dirname(__DIR__)
@@ -16,5 +15,7 @@ $container->bind('Src\Database\Database', function () {
 });
 
 $app::setContainer($container);
+
+$app->init();
 
 return $app;
