@@ -9,8 +9,7 @@ class Guest
     public function handle()
     {
         if (Auth::check() ?? false) {
-            header('location: /');
-            exit();
+            redirect(route("/"));
         }
     }
 }

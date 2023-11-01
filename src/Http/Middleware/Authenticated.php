@@ -9,8 +9,7 @@ class Authenticated
     public function handle()
     {
         if (!Auth::check() ?? false) {
-            header('location: /');
-            exit();
+            redirect(route("/"));
         }
     }
 }

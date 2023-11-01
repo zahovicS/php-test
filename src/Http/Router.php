@@ -2,6 +2,7 @@
 
 namespace Src\Http;
 
+use Exception;
 use Src\Http\Middleware\Middleware;
 
 class Router
@@ -54,28 +55,44 @@ class Router
 
     public function route($uri, $method)
     {
+        $action = null;
+        $middleware = null;
         foreach ($this->routes as $route) {
             if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
-                Middleware::resolve($route['middleware']);
-                dd($route);
-                // return require base_path('Http/controllers/' . $route['controller']);
+                $action = $route["controller"];
+                $middleware = $route['middleware'];
+                break;
             }
         }
+        if (!$action) {
+            return $this->abort();
+            // throw new Exception("Action '{$route['uri']}' in Router is not defined.");
+        }
 
-        $this->abort();
+        Middleware::resolve($middleware);
+
+        if (is_array($action)) {
+            $controller = new $action[0];
+            $action = [$controller,$action[1]];
+        }
+        $data = Request::capture();
+        call_user_func_array($action,[(object) $data]);
     }
 
     public function previousUrl()
     {
         return $_SERVER['HTTP_REFERER'];
     }
-
+    private function cleanURI(string $uri,string $url):string{
+        $resolve = $uri;
+        if ($uri != "/") {
+            $resolve = str_replace($url,"",$uri);
+        }
+        return $resolve;
+    }
     protected function abort($code = 404)
     {
-        echo http_response_code($code);
-
-        // require base_path("views/{$code}.php");
-
-        die();
+        http_response_code($code);
+        return view("Errors.{$code}");
     }
 }

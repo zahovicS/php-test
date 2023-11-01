@@ -6,16 +6,13 @@ use Src\Database\DB;
 
 class Auth
 {
-    public function attempt(string $email,string $password): bool
+    public static function attempt(string $email,string $password): bool
     {
         $user = DB::query('SELECT * FROM usuarios WHERE email = :email', [
             'email' => $email
         ])->first();
-
-        if ($user && password_verify($password, $user['password'])) {
-            $this->login([
-                'email' => $email
-            ]);
+        if ($user && password_verify($password, $user->password)) {
+            self::login($user);
 
             return true;
         }
@@ -23,16 +20,14 @@ class Auth
         return false;
     }
 
-    public function login(array $user): void
+    private static function login($user): void
     {
-        $_SESSION['user'] = [
-            'email' => $user['email']
-        ];
+        $_SESSION['user'] = $user;
 
         session_regenerate_id(true);
     }
 
-    public static function user():?array
+    public static function user():?object
     {
         return Auth::check() ? $_SESSION['user'] : null;
     }

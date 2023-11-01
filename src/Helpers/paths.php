@@ -9,7 +9,7 @@ function app_path(string $path = ""){
 }
 
 function view_path(string $path = ""){
-    return app_path("Views/{$path}");
+    return root_path("/resources/views/{$path}");
 }
 
 function root_path(string $folder = ""){
