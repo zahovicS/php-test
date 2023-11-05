@@ -6,11 +6,11 @@ use Src\Database\Database;
 use stdClass;
 use PDO;
 
-class DB{
+class DB
+{
 
     public static $instance = null;
     private static $statement = null;
-    private static $result = null;
 
     public static function connection(string $connection): DB
     {
@@ -19,7 +19,7 @@ class DB{
         return new self;
     }
 
-    public static function query(string $query,array $params = []): DB
+    public static function query(string $query, array $params = []): DB
     {
         $config = config("database");
         self::$instance = self::$instance ?? (new Database($config['default']))->getConnection();
@@ -30,21 +30,19 @@ class DB{
 
     public static function get(): array
     {
-        self::$result = self::$statement->fetchAll();
-        return self::$result;
+        return self::$statement->fetchAll();
     }
 
     public  static function first(): stdClass
     {
-        self::$result = self::$statement->fetch();
-        return self::$result;
+        return self::$statement->fetch();
     }
 
     public  static function findOrFail(): stdClass
     {
         $result = self::first();
 
-        if (! $result) {
+        if (!$result) {
             die();
         }
 

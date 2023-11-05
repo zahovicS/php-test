@@ -2,8 +2,8 @@ const path = require('path')
 
 module.exports = {
   entry: {
-    'public/assets/js/app': './resources/js/app.js',
-    'public/assets/js/products/index': './resources/js/products/index.js',
+    // 'public/assets/js/app': './resources/js/app.js',
+    // 'public/assets/js/products/index': './resources/js/products/index.js',
   },
   output: {
     filename: '[name].js',

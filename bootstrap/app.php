@@ -7,14 +7,14 @@ $app = new \Src\App\Application(
     dirname(__DIR__)
 );
 
-$container = new Container();
+// $container = new Container();
 
-$container->bind('Src\Database\Database', function () {
-    $config = config("database");
-    return new Database($config['database']);
-});
+// $container->bind(Database::class, function () {
+//     $config = config("database");
+//     return new Database($config['database']);
+// });
 
-$app::setContainer($container);
+// $app::setContainer($container);
 
 $app->init();
 
