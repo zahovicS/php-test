@@ -46,7 +46,7 @@ class Router
         return $this->add('PUT', $uri, $controller);
     }
 
-    public function only($key)
+    public function only(array|string $key)
     {
         $this->routes[array_key_last($this->routes)]['middleware'] = $key;
 
@@ -56,11 +56,11 @@ class Router
     public function route($uri, $method)
     {
         $action = null;
-        $middleware = null;
+        $middlewares = null;
         foreach ($this->routes as $route) {
             if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
                 $action = $route["controller"];
-                $middleware = $route['middleware'];
+                $middlewares = $route['middleware'];
                 break;
             }
         }
@@ -68,8 +68,14 @@ class Router
             return $this->abort();
             // throw new Exception("Action '{$route['uri']}' in Router is not defined.");
         }
-
-        Middleware::resolve($middleware);
+        if(is_array($middlewares)){
+            foreach ($middlewares as $middleware) {
+                Middleware::resolve($middleware);
+            }
+        }
+        if(is_string($middlewares)){
+            Middleware::resolve($middlewares);
+        }
 
         if (is_array($action)) {
             $controller = new $action[0];

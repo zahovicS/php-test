@@ -67,15 +67,20 @@ class Request
         return "";
     }
 
+    public function getVar(string $key){
+        $data = (array) $this->request;
+        return $data[$key] ?? null;
+    }
+
     protected static function getCookie(string $key = ""): string
     {
         if (isset(self::$cookies[$key])) return self::$cookies[$key];
         return "";
     }
-    private function setPropClass(){
-        $data = array_merge($this->request["GET"],$this->request["POST"],$this->request["DATA-FORM"],$this->request["DATA-JSON"]);
-        foreach ($data as $key => $var) {
-            $this->$key = $var;
-        }
-    }
+    // private function setPropClass(){
+    //     $data = array_merge($this->request["GET"],$this->request["POST"],$this->request["DATA-FORM"],$this->request["DATA-JSON"]);
+    //     foreach ($data as $key => $var) {
+    //         $this->$key = $var;
+    //     }
+    // }
 }

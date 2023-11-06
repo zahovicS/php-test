@@ -1,6 +1,10 @@
 <?php
+
 namespace Src\Database;
 
-class Model extends DB{
-    
+use Src\DataBase\Abstracts\ORM;
+
+class Model extends ORM{
+    protected $table;
+    protected $primaryKey;
 }

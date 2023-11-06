@@ -3,16 +3,21 @@
 namespace Src\Auth;
 
 use Src\Database\DB;
+use Src\Database\Query;
 
 class Auth
 {
-    public static function attempt(string $email,string $password): bool
+    public static function attempt(array $credentials, $table_middleware = "users"): bool
     {
-        $user = DB::query('SELECT * FROM usuarios WHERE email = :email', [
-            'email' => $email
-        ])->first();
-        if ($user && password_verify($password, $user->password)) {
-            self::login($user);
+        $result = (new Query)->table($table_middleware);
+        foreach ($credentials as $key => $credential) {
+            if($key != "password"){
+                $result->where($key,"=",$credential);
+            }
+        }
+        $user = $result->first();
+        if ($user && $credentials["password"] && password_verify($credentials["password"], $user->password)) {
+            self::login($user,$table_middleware);
 
             return true;
         }
@@ -20,21 +25,21 @@ class Auth
         return false;
     }
 
-    private static function login($user): void
+    private static function login($user,string $middleware = "user"): void
     {
-        $_SESSION['user'] = $user;
+        $_SESSION[$middleware] = $user;
 
         session_regenerate_id(true);
     }
 
-    public static function user():?object
+    public static function user(string $middleware = "user"):?object
     {
-        return Auth::check() ? $_SESSION['user'] : null;
+        return Auth::check($middleware) ? $_SESSION[$middleware] : null;
     }
 
-    public static function check(): bool
+    public static function check(string $middleware = "user"): bool
     {
-        return isset($_SESSION['user']) && !empty($_SESSION['user']);
+        return isset($_SESSION[$middleware]) && !empty($_SESSION[$middleware]);
     }
 
     public function logout()
