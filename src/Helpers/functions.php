@@ -9,6 +9,10 @@ function view(string $template, array $data = [])
 {
     return View::view($template, $data);
 }
+function render(string $template, array $data = [])
+{
+    return View::render($template, $data);
+}
 function redirect(string $route)
 {
     header("location: {$route}");
@@ -42,6 +46,13 @@ function cleanUri(string $uri)
 function string_starts_with(string $haystack, string $needle): bool
 {
     return 0 === strncmp($haystack, $needle, \strlen($needle));
+}
+
+function getRandomStringUniqid($length = 32)
+{
+    $string = uniqid(rand());
+    $randomString = substr($string, 0, $length);
+    return $randomString;
 }
 
 function dd(...$vars)

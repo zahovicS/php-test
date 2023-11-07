@@ -12,5 +12,7 @@
             "email": "49574508+zahovicS@users.noreply.github.com"
         }
     ],
-    "require": {}
+    "require": {
+        "phpmailer/phpmailer": "^6.8"
+    }
 }

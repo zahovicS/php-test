@@ -26,6 +26,7 @@ abstract class ORM extends QueryBuilder
         if ($this->getResultOfDB()) {
             $this->result = $this->query->fetchAll();
         }
+        $this->resetQuery();
         return $this->result;
     }
 
@@ -34,6 +35,7 @@ abstract class ORM extends QueryBuilder
         if ($this->getResultOfDB()) {
             $this->result = $this->query->fetch();
         }
+        $this->resetQuery();
         return $this->result;
     }
 
@@ -55,7 +57,7 @@ abstract class ORM extends QueryBuilder
         return $this;
     }
 
-    public function save(array $values)
+    public function save(array $values, bool $returnID = true)
     {
         $this->setInsert($this->table);
         $this->verifyColumns($values);
@@ -64,7 +66,10 @@ abstract class ORM extends QueryBuilder
             $this->setInsertValues($column_name);
             $this->setValues($column_name, $value);
         }
-        return $this->generateResponseDB();
+        $result = $this->generateResponseDB();
+        $this->resetQuery();
+        if ($returnID) return $this->getLastInsertId();
+        return $result;
     }
 
     public function update(array $values)
@@ -75,19 +80,26 @@ abstract class ORM extends QueryBuilder
             $this->setUpdateColumns($column_name);
             $this->setValues($column_name, $value);
         }
-        return $this->generateResponseDB();
+        $result = $this->generateResponseDB();
+        $this->resetQuery();
+        return $result;
     }
 
     public function delete()
     {
         $this->setDelete($this->table);
-        return $this->generateResponseDB();
+        $result = $this->generateResponseDB();
+        $this->resetQuery();
+        return $result;
     }
 
     public function truncate()
     {
         $queryBuilder = "TRUNCATE TABLE $this->table";
-        return $this->getResultOfDB($queryBuilder);
+        $result = $this->getResultOfDB($queryBuilder);
+        $this->resetQuery();
+        return $result;
+
     }
 
     public function getLastInsertId()
@@ -107,7 +119,7 @@ abstract class ORM extends QueryBuilder
             $this->query = $query;
             return true;
         } catch (Exception $e) {
-            throw new Exception("Error Database: ".$e->getMessage());
+            throw new Exception("Error Database: " . $e->getMessage());
         }
     }
 
@@ -156,5 +168,4 @@ abstract class ORM extends QueryBuilder
             }
         }
     }
-   
 }
